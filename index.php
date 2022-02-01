@@ -54,8 +54,17 @@ if (!empty($_POST['product']) &&
 
     $result = mysqli_query($openBD, $query)
     or die("ERROR QUERY");
+
 } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     echo "Error";
+}
+$openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
+or die('ERROR CONNECTION TO DB');
+$queryy = "SELECT * FROM reseipt";
+$result = mysqli_query($openBD, $queryy)
+or die("ERROR QUERY");
+while ($row = mysqli_fetch_array($result)) {
+    echo $row['product'] . ' ' . $row['shop'] . "<br/>";
 }
 
 
