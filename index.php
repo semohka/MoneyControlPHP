@@ -49,7 +49,7 @@ if (!empty($_POST['product']) &&
     $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
     or die('ERROR CONNECTION TO DB');
 
-    $query = "INSERT INTO reseipt(product, shop, count, price, grade, comment, date)" .
+    $query = "INSERT INTO receipt(product, shop, count, price, grade, comment, date)" .
         "VALUES ('$productName', '$shopName', '$countName', '$priceName', '$gradeName', '$commentName', now())";
 
     $result = mysqli_query($openBD, $query)
@@ -60,14 +60,41 @@ if (!empty($_POST['product']) &&
 }
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
-$queryy = "SELECT * FROM reseipt";
-$result = mysqli_query($openBD, $queryy)
-or die("ERROR QUERY");
-while ($row = mysqli_fetch_array($result)) {
-    echo $row['product'] . ' ' . $row['shop'] . "<br/>";
-}
+$queryy = "SELECT * FROM receipt";
+$result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
+?>
 
+<table border='1'>
+    <tr>
+        <td>продукт</td>
+        <td>магазин</td>
+        <td>количество</td>
+        <td>цена</td>
+        <td>оценка</td>
+        <td>комментарий</td>
+    </tr>
+    
+
+    <?php
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<tr>", "<td>", $row['product'], "</td>";
+        echo "<td>", $row['shop'], "</td>";
+        echo "<td>", $row['count'], "</td>";
+        echo "<td>", $row['price'], "</td>";
+        echo "<td>", $row['grade'], "</td>";
+        echo "<td>", $row['comment'], "</td>";
+        echo "</tr>";
+    }
+    ?>
+</table>
+
+<?php
+$q = "DELETE FROM receipt WHERE grade = 'bad'";
+$res = mysqli_query($openBD, $q) or die("ERROR DELETE");
+
+mysqli_close($openBD);
 
 ?>
+
 </body>
 </html>
