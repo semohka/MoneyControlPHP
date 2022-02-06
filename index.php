@@ -2,10 +2,18 @@
 <head>
     <meta charset="utf-8">
     <title>Control</title>
-    <h2>Money Control</h2>
+    <style>
+        body {
+            background-color: gainsboro;
+            margin-left: 10%;
+            margin-top: 10%;
+            font-family: sans-serif;
+        }
+    </style>
 </head>
 
 <body>
+<h1>Money Control</h1>
 <form action="index.php" method="post">
     <p><b>Введите данные</b></p>
     <label for="product">Товар</label>
@@ -30,6 +38,7 @@
 
     <input type="submit" value="Сохранить" name="submit"/>
 </form>
+<a href="table.php">Таблица</a>
 <?php
 
 //var_dump($_POST);
@@ -55,46 +64,20 @@ if (!empty($_POST['product']) &&
     $result = mysqli_query($openBD, $query)
     or die("ERROR QUERY");
 
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
 } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     echo "Error";
 }
-$openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-or die('ERROR CONNECTION TO DB');
-$queryy = "SELECT * FROM receipt";
-$result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 ?>
-
-<table border='1'>
-    <tr>
-        <td>продукт</td>
-        <td>магазин</td>
-        <td>количество</td>
-        <td>цена</td>
-        <td>оценка</td>
-        <td>комментарий</td>
-    </tr>
-    
-
-    <?php
-    while ($row = mysqli_fetch_array($result)) {
-        echo "<tr>", "<td>", $row['product'], "</td>";
-        echo "<td>", $row['shop'], "</td>";
-        echo "<td>", $row['count'], "</td>";
-        echo "<td>", $row['price'], "</td>";
-        echo "<td>", $row['grade'], "</td>";
-        echo "<td>", $row['comment'], "</td>";
-        echo "</tr>";
-    }
-    ?>
-</table>
 
 <?php
-$q = "DELETE FROM receipt WHERE grade = 'bad'";
-$res = mysqli_query($openBD, $q) or die("ERROR DELETE");
-
-mysqli_close($openBD);
-
+//$q = "DELETE FROM receipt WHERE grade = 'bad'";
+//$res = mysqli_query($openBD, $q) or die("ERROR DELETE");
+//
+//mysqli_close($openBD);
 ?>
+
 
 </body>
 </html>
