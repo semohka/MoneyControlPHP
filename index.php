@@ -13,7 +13,8 @@
 </head>
 
 <body>
-<h1>Money Control</h1>
+<h1>Контроль денег</h1>
+<img src="gold-coin.png" width="100" height="100" alt="тут долждна быть картинка">
 <form action="index.php" method="post">
     <p><b>Введите данные</b></p>
     <label for="product">Товар</label>
@@ -38,7 +39,7 @@
 
     <input type="submit" value="Сохранить" name="submit"/>
 </form>
-<a href="table.php">Таблица</a>
+<a href="table.php" title="Просмотр таблицы">Таблица</a>
 <?php
 
 //var_dump($_POST);
@@ -53,7 +54,7 @@ if (!empty($_POST['product']) &&
     $countName = $_POST['count'];
     $priceName = $_POST['price'];
     $gradeName = $_POST['grade'];
-    $commentName = $_POST['comment'];
+    $commentName = trim($_POST['comment']);
 
     $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
     or die('ERROR CONNECTION TO DB');
@@ -69,13 +70,6 @@ if (!empty($_POST['product']) &&
 } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     echo "Error";
 }
-?>
-
-<?php
-//$q = "DELETE FROM receipt WHERE grade = 'bad'";
-//$res = mysqli_query($openBD, $q) or die("ERROR DELETE");
-//
-//mysqli_close($openBD);
 ?>
 
 
