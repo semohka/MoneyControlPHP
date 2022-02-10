@@ -21,21 +21,74 @@
 <?php
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
-$queryy = "SELECT * FROM receipt ORDER BY productId DESC";
+
+$orderBy = 'productId';
+if (!empty($_GET['sort'])) {
+    $orderBy = $_GET['sort'];
+}
+
+$direction = 'DESC';
+if (isset($_GET['direction'])) {
+    $direction = $_GET['direction'];
+}
+
+//$arr = ["age"=>22,"name"=>"qwerty", 12 => 'oppa'];
+//echo '<pre>';
+//print_r($arr);
+//echo '</pre>';
+//
+//echo $arr[12];
+
+//if($_GET['direction'] == 'DESC'){
+//    $direction = 'ASC';
+//}
+
+$queryy = "SELECT * FROM receipt ORDER BY $orderBy $direction";
 $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 ?>
 
 <table class="center" border="1">
     <tr>
-        <th>id</th>
-        <th>Продукт</th>
-        <th>Магазин</th>
-        <th>Количество</th>
-        <th>Цена</th>
-        <th>Оценка</th>
-        <th>Комментарий</th>
-        <th>Дата</th>
-
+        <th><a href="table.php?sort=productId&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">id</a></th>
+        <th><a href="table.php?sort=product&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Продукт</a></th>
+        <th><a href="table.php?sort=shop&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Магазин</a></th>
+        <th><a href="table.php?sort=count&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Количество</a></th>
+        <th><a href="table.php?sort=price&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Цена</a></th>
+        <th><a href="table.php?sort=grade&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Оценка</a></th>
+        <th><a href="table.php?sort=comment&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Комментарий</a></th>
+        <th><a href="table.php?sort=date&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Дата</a></th>
     </tr>
 
     <?php
