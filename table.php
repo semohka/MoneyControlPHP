@@ -40,6 +40,8 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 
     <?php
     while ($row = mysqli_fetch_array($result)) {
+        echo "<form method='post' action='delete_receipt.php'>";
+        echo "<input type='hidden' value='" . $row['productId'] . "' name='id'>";
         echo "<tr>";
         echo "<td>", $row['productId'], "</td>";
         echo "<td>", $row['product'], "</td>";
@@ -49,9 +51,10 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
         echo "<td>", $row['grade'], "</td>";
         echo "<td>", $row['comment'], "</td>";
         echo "<td>", $row['date'], "</td>";
-        echo "<td> <a href='delete_receipt.php?id=" . $row['productId'] . "'>Удалить</a> </td>";
+        echo "<td> <input type='submit' value='Удалить' name='submit'/> </td>";
         echo "<td> <button>Редактировать</button> </td>";
         echo "</tr>";
+        echo "</form>";
     }
     ?>
 </table>
