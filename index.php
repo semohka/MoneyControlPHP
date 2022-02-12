@@ -1,3 +1,6 @@
+<?php
+const MC_UPLOAD_PATH = 'images/';
+?>
 <html>
 <head>
     <meta charset="utf-8">
@@ -14,8 +17,9 @@
 
 <body>
 <h1>Контроль денег</h1>
-<img src="gold-coin.png" width="100" height="100" alt="тут долждна быть картинка">
-<form action="index.php" method="post">
+<img src="images/gold-coin.png" width="100" height="100" alt="тут долждна быть картинка">
+<form enctype="multipart/form-data" action="index.php" method="post">
+    <input type="hidden" name="MAX_FILE_SIZE" value="32768">
     <p><b>Введите данные</b></p>
     <label for="product">Товар</label>
     <input type="text" id="product" name="product"><br>
@@ -37,6 +41,7 @@
     <label for="comment">Комментарий</label>
     <textarea id="comment" name="comment"></textarea><br>
 
+    <input type="file" id="screenshot" name="screenshot">
     <input type="submit" value="Сохранить" name="submit"/>
 </form>
 <a href="table.php" title="Просмотр таблицы">Таблица</a>
@@ -55,15 +60,20 @@ if (!empty($_POST['product']) &&
     $priceName = $_POST['price'];
     $gradeName = $_POST['grade'];
     $commentName = trim($_POST['comment']);
+    $screenshotName = $_FILES['screenshot']['name'];
+
+    $target = MC_UPLOAD_PATH . $screenshotName;
+//    $target = 'images/' . $screenshotName; использование без константы
+
+    move_uploaded_file($_FILES['screenshot']['tmp_name'], $target);
 
     $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
     or die('ERROR CONNECTION TO DB');
 
-    $query = "INSERT INTO receipt(product, shop, count, price, grade, comment, date)" .
-        "VALUES ('$productName', '$shopName', '$countName', '$priceName', '$gradeName', '$commentName', now())";
-
-    $result = mysqli_query($openBD, $query)
-    or die("ERROR QUERY");
+    $query = "INSERT INTO receipt(product, shop, count, price, grade, comment, date, screenshot)" .
+        "VALUES ('$productName', '$shopName', '$countName', '$priceName', '$gradeName', '$commentName', now(), '$target')";
+    var_dump($query);
+    $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;

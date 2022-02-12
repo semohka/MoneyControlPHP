@@ -1,3 +1,4 @@
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -32,19 +33,10 @@ if (isset($_GET['direction'])) {
     $direction = $_GET['direction'];
 }
 
-//$arr = ["age"=>22,"name"=>"qwerty", 12 => 'oppa'];
-//echo '<pre>';
-//print_r($arr);
-//echo '</pre>';
-//
-//echo $arr[12];
-
-//if($_GET['direction'] == 'DESC'){
-//    $direction = 'ASC';
-//}
-
 $queryy = "SELECT * FROM receipt ORDER BY $orderBy $direction";
 $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
+
+
 ?>
 
 <table class="center" border="1">
@@ -89,6 +81,11 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
             } else {
                 echo 'DESC';
             } ?>">Дата</a></th>
+        <th><a href="table.php?sort=screenshot&direction=<?php if ($direction == "DESC") {
+                echo 'ASC';
+            } else {
+                echo 'DESC';
+            } ?>">Фото</a></th>
     </tr>
 
     <?php
@@ -104,8 +101,10 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
         echo "<td>", $row['grade'], "</td>";
         echo "<td>", $row['comment'], "</td>";
         echo "<td>", $row['date'], "</td>";
+        echo "<td> <img src=" . $row['screenshot'] . " alt='фото чека'> </td>";
         echo "<td> <input type='submit' value='Удалить' name='submit'/> </td>";
         echo "<td> <button>Редактировать</button> </td>";
+
         echo "</tr>";
         echo "</form>";
     }
