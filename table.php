@@ -101,7 +101,13 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
         echo "<td>", $row['grade'], "</td>";
         echo "<td>", $row['comment'], "</td>";
         echo "<td>", $row['date'], "</td>";
-        echo "<td> <img src=" . $row['screenshot'] . " alt='фото чека'> </td>";
+
+        if ($row['screenshot'] != null) {
+            echo "<td> <img src=" . $row['screenshot'] . " alt='фото чека'> </td>";
+        } else {
+            echo "<td></td>";
+        }
+
         echo "<td> <input type='submit' value='Удалить' name='submit'/> </td>";
         echo "<td> <button>Редактировать</button> </td>";
 

@@ -60,12 +60,16 @@ if (!empty($_POST['product']) &&
     $priceName = $_POST['price'];
     $gradeName = $_POST['grade'];
     $commentName = trim($_POST['comment']);
-    $screenshotName = $_FILES['screenshot']['name'];
+//var_dump($_FILES);die();
 
-    $target = MC_UPLOAD_PATH . $screenshotName;
-//    $target = 'images/' . $screenshotName; использование без константы
-
-    move_uploaded_file($_FILES['screenshot']['tmp_name'], $target);
+    if ($_FILES['screenshot']['error'] == 4) {
+        $target = null;
+    } else {
+        $screenshotName = $_FILES['screenshot']['name'];
+        $target = MC_UPLOAD_PATH . $screenshotName;
+        //    $target = 'images/' . $screenshotName; использование без константы
+        move_uploaded_file($_FILES['screenshot']['tmp_name'], $target);
+    }
 
     $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
     or die('ERROR CONNECTION TO DB');
