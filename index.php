@@ -14,40 +14,62 @@ const MC_UPLOAD_PATH = 'images/';
         }
     </style>
 </head>
-
 <body>
 <h1>Контроль денег</h1>
 <img src="images/gold-coin.png" width="100" height="100" alt="тут долждна быть картинка">
 <form enctype="multipart/form-data" action="index.php" method="post">
     <input type="hidden" name="MAX_FILE_SIZE" value="32768">
     <p><b>Введите данные</b></p>
-    <label for="product">Товар</label>
-    <input type="text" id="product" name="product"><br>
+    <table>
+        <tr>
+            <td><label for="product">Товар</label></td>
+            <td><input type="text" id="product" name="product"></td>
+        </tr>
 
-    <label for="shop">Магазин</label>
-    <input type="text" id="shop" name="shop"><br>
+        <tr>
+            <td><label for="shop">Магазин</label></td>
+            <td><input type="text" id="shop" name="shop"></td>
+        </tr>
 
-    <label for="count">Количество</label>
-    <input type="text" id="count" name="count" value="1"><br>
+        <tr>
+            <td><label for="count">Количество</label></td>
+            <td><input type="text" id="count" name="count" value="1"></td>
+        </tr>
 
-    <label for="price">Цена</label>
-    <input type="text" id="price" name="price"/><br>
+        <tr>
+            <td><label for="price">Цена</label></td>
+            <td><input type="text" id="price" name="price"/></td>
+        </tr>
 
-    <label for="grade">Оценка</label><br>
-    <input type="radio" id="grade" name="grade" value="good">Отлично
-    <input type="radio" id="grade" name="grade" value="normal">Нормально
-    <input type="radio" id="grade" name="grade" value="bad">Плохо<br>
+        <tr>
+            <td><label for="grade">Оценка</label></td>
+            <td><input type="radio" id="grade" name="grade" value="good">Отлично
+                <input type="radio" id="grade" name="grade" value="normal">Нормально
+                <input type="radio" id="grade" name="grade" value="bad">Плохо
+            </td>
+        </tr>
 
-    <label for="comment">Комментарий</label>
-    <textarea id="comment" name="comment"></textarea><br>
+        <tr>
+            <td><label for="comment">Комментарий</label></td>
+            <td><textarea id="comment" name="comment"></textarea></td>
+        </tr>
 
-    <input type="file" id="screenshot" name="screenshot">
-    <input type="submit" value="Сохранить" name="submit"/>
+        <tr>
+            <td>Фото чека</td>
+            <td><input type="file" id="screenshot" name="screenshot"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Сохранить" name="submit"/></td>
+        </tr>
+    </table>
 </form>
 <a href="table.php" title="Просмотр таблицы">Таблица</a>
 <?php
 
-//var_dump($_POST);
 if (!empty($_POST['product']) &&
     !empty($_POST['shop']) &&
     !empty($_POST['count']) &&
@@ -60,7 +82,6 @@ if (!empty($_POST['product']) &&
     $priceName = $_POST['price'];
     $gradeName = $_POST['grade'];
     $commentName = trim($_POST['comment']);
-//var_dump($_FILES);die();
 
     if ($_FILES['screenshot']['error'] == 4) {
         $target = null;
@@ -85,7 +106,5 @@ if (!empty($_POST['product']) &&
     echo "Error";
 }
 ?>
-
-
 </body>
 </html>

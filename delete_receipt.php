@@ -6,6 +6,7 @@ if (!empty($_POST['id'])) {
     $res = mysqli_query($openBD, $q) or die("ERROR DELETE");
     mysqli_close($openBD);
     header("Location: table.php");
+    exit();
 }
 
 
