@@ -1,4 +1,3 @@
-
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,7 +5,7 @@
     <style>
         body {
             background-color: gainsboro;
-            /*margin-left: 10%;*/
+            margin-left: 10%;
             /*margin-top: 10%;*/
             font-family: sans-serif;
         }
@@ -23,7 +22,7 @@
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
 
-$orderBy = 'productId';
+$orderBy = 'id';
 if (!empty($_GET['sort'])) {
     $orderBy = $_GET['sort'];
 }
@@ -41,7 +40,7 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 
 <table class="center" border="1">
     <tr>
-        <th><a href="table.php?sort=productId&direction=<?php if ($direction == "DESC") {
+        <th><a href="table.php?sort=id&direction=<?php if ($direction == "DESC") {
                 echo 'ASC';
             } else {
                 echo 'DESC';
@@ -91,9 +90,9 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
     <?php
     while ($row = mysqli_fetch_array($result)) {
         echo "<form method='post' action='delete_receipt.php'>";
-        echo "<input type='hidden' value='" . $row['productId'] . "' name='id'>";
+        echo "<input type='hidden' value='" . $row['id'] . "' name='id'>";
         echo "<tr>";
-        echo "<td>", $row['productId'], "</td>";
+        echo "<td>", $row['id'], "</td>";
         echo "<td>", $row['product'], "</td>";
         echo "<td>", $row['shop'], "</td>";
         echo "<td>", $row['count'], "</td>";

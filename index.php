@@ -9,12 +9,15 @@ const MC_UPLOAD_PATH = 'images/';
         body {
             background-color: gainsboro;
             margin-left: 10%;
-            margin-top: 10%;
+            /*margin-top: 10%;*/
             font-family: sans-serif;
         }
     </style>
 </head>
 <body>
+<a href="shop.php" title="Создать магазин">Новый магазин</a>
+<a href="table.php" title="Просмотр таблицы">Таблица чеков</a>
+
 <h1>Контроль денег</h1>
 <img src="images/gold-coin.png" width="100" height="100" alt="тут долждна быть картинка">
 <form enctype="multipart/form-data" action="index.php" method="post">
@@ -67,7 +70,6 @@ const MC_UPLOAD_PATH = 'images/';
         </tr>
     </table>
 </form>
-<a href="table.php" title="Просмотр таблицы">Таблица</a>
 <?php
 
 if (!empty($_POST['product']) &&
@@ -100,9 +102,9 @@ if (!empty($_POST['product']) &&
     var_dump($query);
     $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 
-    header("Location: " . $_SERVER['PHP_SELF']);
+    header("Location: " . $_SERVER['PHP_SELF']); //отобрази эти страницу еще раз методом гет
     exit;
-} elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
+} elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
     echo "Error";
 }
 ?>
