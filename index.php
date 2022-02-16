@@ -23,6 +23,13 @@ const MC_UPLOAD_PATH = 'images/';
 <form enctype="multipart/form-data" action="index.php" method="post">
     <input type="hidden" name="MAX_FILE_SIZE" value="32768">
     <p><b>Введите данные</b></p>
+    <?php
+    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
+    or die('ERROR CONNECTION TO DB');
+    $shops_query = 'SELECT * FROM shops';
+    $res = mysqli_query($openBD, $shops_query) or die();
+
+    ?>
     <table>
         <tr>
             <td><label for="product">Товар</label></td>
@@ -31,7 +38,14 @@ const MC_UPLOAD_PATH = 'images/';
 
         <tr>
             <td><label for="shop">Магазин</label></td>
-            <td><input type="text" id="shop" name="shop"></td>
+            <td>
+                <select name="shop" id="shop">
+                    <?php while ($row = mysqli_fetch_array($res)) {
+                        echo "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";
+                    }
+                    ?>
+                </select>
+            </td>
         </tr>
 
         <tr>
@@ -94,10 +108,8 @@ if (!empty($_POST['product']) &&
         move_uploaded_file($_FILES['screenshot']['tmp_name'], $target);
     }
 
-    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-    or die('ERROR CONNECTION TO DB');
 
-    $query = "INSERT INTO receipt(product, shop, count, price, grade, comment, date, screenshot)" .
+    $query = "INSERT INTO receipt(product, shop_id, count, price, grade, comment, date, screenshot)" .
         "VALUES ('$productName', '$shopName', '$countName', '$priceName', '$gradeName', '$commentName', now(), '$target')";
     var_dump($query);
     $result = mysqli_query($openBD, $query) or die("ERROR QUERY");

@@ -31,8 +31,10 @@ $direction = 'DESC';
 if (isset($_GET['direction'])) {
     $direction = $_GET['direction'];
 }
+//select receipt.id, shops.title FROM receipt INNER JOIN shops ON (receipt.shop_id = shops.id);
 
-$queryy = "SELECT * FROM receipt ORDER BY $orderBy $direction";
+$queryy = "select receipt.id, product, shops.title, count, price, grade, comment, date, screenshot FROM receipt INNER JOIN shops ON (receipt.shop_id = shops.id)
+ ORDER BY $orderBy $direction";
 $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 
 
@@ -94,7 +96,7 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
         echo "<tr>";
         echo "<td>", $row['id'], "</td>";
         echo "<td>", $row['product'], "</td>";
-        echo "<td>", $row['shop'], "</td>";
+        echo "<td>", $row['title'], "</td>";
         echo "<td>", $row['count'], "</td>";
         echo "<td>", $row['price'], "</td>";
         echo "<td>", $row['grade'], "</td>";
