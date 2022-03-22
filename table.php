@@ -31,13 +31,23 @@ $direction = 'DESC';
 if (isset($_GET['direction'])) {
     $direction = $_GET['direction'];
 }
-//select receipt.id, shops.title FROM receipt INNER JOIN shops ON (receipt.shop_id = shops.id);
-
 $queryy = "select receipt.id, product, shops.title, count, price, grade, comment, date, screenshot FROM receipt INNER JOIN shops ON (receipt.shop_id = shops.id)
  ORDER BY $orderBy $direction";
 $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
+?>
+<form name="search" action="table.php" method="post">
+    <input type="search" name="search" placeholder="Поиск">
+    <button type="submit">Найти</button>
+</form>
 
-
+<?php
+$search = $_GET['search'];
+if (!empty($search)) {
+    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
+    or die('ERROR CONNECTION TO DB');
+    $query1 = "select receipt.id, product, shops.title, count, price, grade, comment, date, screenshot FROM receipt WHERE `text` LIKE '%$search%' ";
+    $result = mysqli_query($openBD, $query1);
+}
 ?>
 
 <table class="center" border="1">
@@ -118,7 +128,5 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
     ?>
 </table>
 <a href="index.php">Вернуться обратно</a>
-
-
 </body>
 </html>
