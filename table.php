@@ -17,7 +17,7 @@
     </style>
 </head>
 <body>
-<h1>Таблица чеков</h1>
+<h1>ТАБЛИЦА ЧЕКОВ</h1>
 <?php
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
@@ -31,8 +31,8 @@ $direction = 'DESC';
 if (isset($_GET['direction'])) {
     $direction = $_GET['direction'];
 }
-$queryy = "select receipt.id, product, shops.title, count, price, grade, comment, date, screenshot FROM receipt INNER JOIN shops ON (receipt.shop_id = shops.id)
- ORDER BY $orderBy $direction";
+$queryy = "select * FROM products INNER JOIN receipts ON (products.receipt_id = receipts.id) JOIN shops ON (receipts.shop_id = shops.id)
+";
 $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 ?>
 <form name="search" action="table.php" method="post">
@@ -41,13 +41,13 @@ $result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
 </form>
 
 <?php
-$search = $_GET['search'];
-if (!empty($search)) {
-    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-    or die('ERROR CONNECTION TO DB');
-    $query1 = "select receipt.id, product, shops.title, count, price, grade, comment, date, screenshot FROM receipt WHERE `text` LIKE '%$search%' ";
-    $result = mysqli_query($openBD, $query1);
-}
+//$search = $_GET['search'];
+//if (!empty($search)) {
+//    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
+//    or die('ERROR CONNECTION TO DB');
+//    $query1 = "select receipt.id, product, shops.title, count, price, grade, comment, date, screenshot FROM receipt WHERE `text` LIKE '%$search%' ";
+//    $result = mysqli_query($openBD, $query1);
+//}
 ?>
 
 <table class="center" border="1">
@@ -101,17 +101,15 @@ if (!empty($search)) {
 
     <?php
     while ($row = mysqli_fetch_array($result)) {
-        echo "<form method='post' action='delete_receipt.php'>";
-        echo "<input type='hidden' value='" . $row['id'] . "' name='id'>";
         echo "<tr>";
-        echo "<td>", $row['id'], "</td>";
-        echo "<td>", $row['product'], "</td>";
+//        echo "<td>", $row['id'], "</td>";
+//        echo "<td>", $row['product'], "</td>";
         echo "<td>", $row['title'], "</td>";
         echo "<td>", $row['count'], "</td>";
-        echo "<td>", $row['price'], "</td>";
+        echo "<td>", $row['price_of_one'], "</td>";
         echo "<td>", $row['grade'], "</td>";
         echo "<td>", $row['comment'], "</td>";
-        echo "<td>", $row['date'], "</td>";
+//        echo "<td>", $row['date'], "</td>";
 
         if ($row['screenshot'] != null) {
             echo "<td> <img src=" . $row['screenshot'] . " alt='фото чека'> </td>";
@@ -119,12 +117,17 @@ if (!empty($search)) {
             echo "<td></td>";
         }
 
-        echo "<td> <input type='submit' value='Удалить' name='submit'/> </td>";
-        echo "<td> <button>Редактировать</button> </td>";
-
-        echo "</tr>";
+        echo "<td>";
+        echo "<form method='post' action='delete_receipt.php'>";
+        echo "<input type='hidden' value='" . $row['id'] . "' name='id'>";
+        echo "<input type='submit' value='Удалить' name='submit'/>";
         echo "</form>";
+        echo "</td>";
+
+        echo "<td><a href='index.php'>Редактировать</a></td>";
+        echo "</tr>";
     }
+
     ?>
 </table>
 <a href="index.php">Вернуться обратно</a>

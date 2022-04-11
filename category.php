@@ -10,13 +10,13 @@
     </style>
 </head>
 <body>
-<h1>ТАБЛИЦА МАГАЗИНОВ</h1>
-<form action="shop.php" method="post">
+<h1>ТАБЛИЦА КАТЕГОРИЙ</h1>
+<form action="category.php" method="post">
     <p><b>Введите данные</b></p>
     <table>
         <tr>
-            <td><label for="shop">Магазин</label></td>
-            <td><input type="text" id="shop" name="shop"></td>
+            <td><label for="category">Категория</label></td>
+            <td><input type="text" id="category" name="category"></td>
         </tr>
 
         <tr>
@@ -31,12 +31,12 @@
 <a href="index.php">Вернуться обратно</a>
 
 <?php
-if (!empty($_POST['shop'])) {
-    $shopName = $_POST['shop'];
+if (!empty($_POST['category'])) {
+    $categoryName = $_POST['category'];
     $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
     or die('ERROR CONNECTION TO DB');
-    $query = "INSERT INTO shops(title)" .
-        "VALUES ('$shopName')";
+    $query = "INSERT INTO product_categories(title)" .
+        "VALUES ('$categoryName')";
 
     $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 
@@ -45,8 +45,6 @@ if (!empty($_POST['shop'])) {
 } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
     echo "Error";
 }
-
-
 ?>
 </body>
 </html>

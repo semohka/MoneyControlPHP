@@ -1,3 +1,9 @@
+<?php
+$openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
+or die('ERROR CONNECTION TO DB');
+$shops_query = 'SELECT * FROM shops';
+$res_shops_query = mysqli_query($openBD, $shops_query) or die();
+?>
 <html>
 <head>
     <style>
@@ -10,15 +16,22 @@
     </style>
 </head>
 <body>
-<h1>ТАБЛИЦА МАГАЗИНОВ</h1>
-<form action="shop.php" method="post">
+<h1>СОЗДАТЬ НОВЫЙ ЧЕК</h1>
+<form action="receipt.php" method="post">
     <p><b>Введите данные</b></p>
     <table>
         <tr>
             <td><label for="shop">Магазин</label></td>
-            <td><input type="text" id="shop" name="shop"></td>
+            <td><select name="shop" id="shop">
+                <?php while ($row = mysqli_fetch_array($res_shops_query)) {
+                    echo "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";
+                }
+                ?></td>
         </tr>
-
+        <tr>
+            <td><label for="date">Дата</label></td>
+            <td><input type="datetime-local" id="date" name="date"></td>
+        </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -29,14 +42,17 @@
     </table>
 </form>
 <a href="index.php">Вернуться обратно</a>
-
+<a href="table_receipts.php">Просмотр чеков</a>
 <?php
-if (!empty($_POST['shop'])) {
+if (!empty($_POST['shop']) &&
+    !empty($_POST['date'])) {
+
     $shopName = $_POST['shop'];
+    $dateName = $_POST['date'];
     $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
     or die('ERROR CONNECTION TO DB');
-    $query = "INSERT INTO shops(title)" .
-        "VALUES ('$shopName')";
+    $query = "INSERT INTO receipts(shop_id, date)" .
+        "VALUES ('$shopName', '$dateName')";
 
     $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 
@@ -45,8 +61,6 @@ if (!empty($_POST['shop'])) {
 } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
     echo "Error";
 }
-
-
 ?>
 </body>
 </html>
