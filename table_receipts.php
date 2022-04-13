@@ -6,18 +6,12 @@
         body {
             background-color: gainsboro;
             margin-left: 10%;
-            /*margin-top: 10%;*/
             font-family: sans-serif;
-        }
-
-        .center {
-            margin-left: auto;
-            margin-right: auto;
         }
     </style>
 </head>
 <body>
-<h1>ПРОСМОТР И РЕДАКТИРОВАИНЕ ЧЕКОВ</h1>
+<h1>ПРОСМОТР И РЕДАКТИРОВАНИЕ ЧЕКОВ</h1>
 <?php
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
@@ -45,6 +39,7 @@ $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
     ?>
 
 </table>
+<br>
 <a href="index.php">Вернуться обратно</a>
 </body>
 </html>

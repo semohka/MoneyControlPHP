@@ -1,8 +1,29 @@
 <?php
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
+
 $category_query = 'SELECT * FROM product_categories';
 $res_category_query = mysqli_query($openBD, $category_query) or die();
+
+$query_show = "SELECT product_categories.title as categ_ttl, products.title as prod_ttl, 
+       price_of_one, total_price, grade, count, comment, receipt_id, 
+       date, shops.title as shp_ttl FROM products 
+    INNER JOIN receipts ON (products.receipt_id = receipts.id) 
+    INNER JOIN shops ON (receipts.shop_id = shops.id)
+    INNER JOIN product_categories ON (products.category_id = product_categories.id) WHERE receipt_id=" . (int)$_GET['receipt_id'];
+$result_query_show = mysqli_query($openBD, $query_show) or die();
+
+$receipt_id = null;
+if (!empty($_GET['receipt_id'])) {
+    $receipt_id = $_GET['receipt_id'];
+}
+
+$shops_query = "SELECT shops.title as shp_ttl,  date FROM shops 
+    INNER JOIN receipts ON (shops.id = receipts.shop_id) 
+    WHERE receipts.id=" . (int)$_GET['receipt_id'];
+$res_shops_query = mysqli_query($openBD, $shops_query) or die();
+
+
 ?>
 <html>
 <head>
@@ -10,24 +31,24 @@ $res_category_query = mysqli_query($openBD, $category_query) or die();
         body {
             background-color: gainsboro;
             margin-left: 10%;
-            /*margin-top: 10%;*/
             font-family: sans-serif;
         }
     </style>
 </head>
 <body>
-<h1>ДОБАВЛЕНИЕ ПРОДУКТА В ЧЕК</h1>
+<h1>ДОБАВЛЕНИЕ ПРОДУКТА В ЧЕК № <?= $receipt_id ?></h1>
+<h2>
+    <?php
+    while ($row = mysqli_fetch_array($res_shops_query)) {
+        echo $row['shp_ttl'] . " ";
+        echo $row['date'];
+    }
+    ?>
+</h2>
 <form action="edit_form.php" method="post">
     <p><b>Введите данные</b></p>
     <table>
         <tr>
-            <?php
-            $receipt_id = null;
-            if (!empty($_GET['receipt_id'])) {
-                $receipt_id = $_GET['receipt_id'];
-            }
-            var_dump($_GET);
-            ?>
             <td>
                 <input type="hidden" name="receipt_id" value="<?= $receipt_id ?>"/>
             </td>
@@ -72,10 +93,12 @@ $res_category_query = mysqli_query($openBD, $category_query) or die();
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td><input type="submit" value="Сохранить" name="submit"/></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
         </tr>
     </table>
 
@@ -96,24 +119,12 @@ $res_category_query = mysqli_query($openBD, $category_query) or die();
     VALUE ('$receipt_id', '$category', '$product','$count', '$price_of_one', '$total_price', '$grade', '$comment', '$screenshot')";
         $result_save = mysqli_query($openBD, $query_save) or die(mysqli_error($openBD));
         header("Location: edit_form.php?receipt_id=$receipt_id"); //отобрази эти страницу еще раз методом гет
-
         exit;
     }
+
+
     ?>
 
-
-    <?php
-    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-    or die('ERROR CONNECTION TO DB');
-    $query_show = "SELECT product_categories.title as categ_ttl, products.title as prod_ttl, 
-       price_of_one, total_price, grade, count, comment, receipt_id, 
-       date, shops.title as shp_ttl FROM products 
-    INNER JOIN receipts ON (products.receipt_id = receipts.id) 
-    INNER JOIN shops ON (receipts.shop_id = shops.id)
-    INNER JOIN product_categories ON (products.category_id = product_categories.id) WHERE receipt_id=" . (int)$_GET['receipt_id'];
-    $result_query_show = mysqli_query($openBD, $query_show) or die();
-
-    ?>
     <table class="center" border="1">
         <tr>
             <th>id чека</th>
@@ -146,6 +157,10 @@ $res_category_query = mysqli_query($openBD, $category_query) or die();
         ?>
 
     </table>
-    <a href="index.php">Вернуться обратно</a>
+    <a href="index.php">На главную</a><br>
+    <a href="table_receipts.php">Назад ко всем чекам</a><br>
+    <a href="receipt.php">Создать новый чек</a><br>
+    <a href="shop.php">Создать новый магазин</a><br>
+    <a href="category.php">Создать новый категорию</a>
 </body>
 </html>

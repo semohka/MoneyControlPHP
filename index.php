@@ -8,7 +8,6 @@ const MC_UPLOAD_PATH = 'images/';
         body {
             background-color: gainsboro;
             margin-left: 10%;
-            /*margin-top: 10%;*/
             font-family: sans-serif;
         }
     </style>
@@ -18,10 +17,12 @@ const MC_UPLOAD_PATH = 'images/';
 </head>
 <body>
 <!--<div class="container">-->
-<a href="shop.php" title="Создать магазин">Новый магазин</a>
 <a href="table.php" title="Просмотр таблицы">Таблица чеков</a>
-<a href="category.php">Категории</a>
+<a href="shop.php" title="Создать магазин">Новый магазин</a>
+<a href="category.php">Новая категория</a>
 <a href="receipt.php">Новый чек</a>
+<a href="table_receipts.php">Просмотр и редактирование чеков</a>
+
 <h1>КОНТРОЛЬ ДЕНЕГ</h1>
 <h2>Мои покупки</h2>
 
