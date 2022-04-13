@@ -24,7 +24,6 @@ or die('ERROR CONNECTION TO DB');
 $query = "SELECT receipts.id, shops.title, date FROM receipts INNER JOIN shops ON (receipts.shop_id = shops.id)";
 $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 
-//$receipt_id =
 ?>
 
 <table class="center" border="1">

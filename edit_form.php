@@ -101,6 +101,51 @@ $res_category_query = mysqli_query($openBD, $category_query) or die();
     }
     ?>
 
+
+    <?php
+    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
+    or die('ERROR CONNECTION TO DB');
+    $query_show = "SELECT product_categories.title as categ_ttl, products.title as prod_ttl, 
+       price_of_one, total_price, grade, count, comment, receipt_id, 
+       date, shops.title as shp_ttl FROM products 
+    INNER JOIN receipts ON (products.receipt_id = receipts.id) 
+    INNER JOIN shops ON (receipts.shop_id = shops.id)
+    INNER JOIN product_categories ON (products.category_id = product_categories.id) WHERE receipt_id=" . (int)$_GET['receipt_id'];
+    $result_query_show = mysqli_query($openBD, $query_show) or die();
+
+    ?>
+    <table class="center" border="1">
+        <tr>
+            <th>id чека</th>
+            <th>Категория</th>
+            <th>Продукт</th>
+            <th>Магазин</th>
+            <th>Цена за штуку</th>
+            <th>Общая цена</th>
+            <th>Количесво</th>
+            <th>Оценка</th>
+            <th>Комментарий</th>
+            <th>Дата</th>
+        </tr>
+
+        <?php
+        while ($row = mysqli_fetch_array($result_query_show)) {
+            echo "<tr>";
+            echo "<td>", $row['receipt_id'], "</td>";
+            echo "<td>", $row['categ_ttl'], "</td>";
+            echo "<td>", $row['prod_ttl'], "</td>";
+            echo "<td>", $row['shp_ttl'], "</td>";
+            echo "<td>", $row['price_of_one'], "</td>";
+            echo "<td>", $row['total_price'], "</td>";
+            echo "<td>", $row['count'], "</td>";
+            echo "<td>", $row['grade'], "</td>";
+            echo "<td>", $row['comment'], "</td>";
+            echo "<td>", $row['date'], "</td>";
+            echo "</tr>";
+        }
+        ?>
+
+    </table>
     <a href="index.php">Вернуться обратно</a>
 </body>
 </html>
