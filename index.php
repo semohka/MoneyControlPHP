@@ -92,6 +92,7 @@ const MC_UPLOAD_PATH = 'images/';
                 </div>
     </form>
 
+
     <?php
 
     if (!empty($_POST['product']) &&
@@ -121,7 +122,7 @@ const MC_UPLOAD_PATH = 'images/';
 //        $lastReceipt = mysqli_insert_id($_POST['receipt_id']);
 
         $query = "INSERT INTO products(title, count, price_of_one, total_price, grade, comment, screenshot, receipt_id, category_id)" .
-            "VALUES ('$productName', '$countName', '$priceOne', '$priceTotal', '$gradeName', '$commentName','$target', , $categoryName)";
+            "VALUES ('$productName', '$countName', '$priceOne', '$priceTotal', '$gradeName', '$commentName','$target', , '$categoryName')";
         var_dump($query);
         $result = mysqli_query($openBD, $query) or die(mysqli_error($openBD));
 
