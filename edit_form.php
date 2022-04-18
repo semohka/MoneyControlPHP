@@ -5,7 +5,7 @@ or die('ERROR CONNECTION TO DB');
 $category_query = 'SELECT * FROM product_categories';
 $res_category_query = mysqli_query($openBD, $category_query) or die();
 
-$query_show = "SELECT product_categories.title as categ_ttl, products.title as prod_ttl, 
+$query_show = "SELECT products.id as prd_id, product_categories.title as categ_ttl, products.title as prod_ttl, 
        price_of_one, total_price, grade, count, comment, receipt_id, 
        date, shops.title as shp_ttl FROM products 
     INNER JOIN receipts ON (products.receipt_id = receipts.id) 
@@ -36,15 +36,15 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die();
     </style>
 </head>
 <body>
-<h1>ДОБАВЛЕНИЕ ПРОДУКТА В ЧЕК № <?= $receipt_id ?></h1>
-<h2>
-    <?php
+<h1>ДОБАВЛЕНИЕ ПРОДУКТА В ЧЕК №
+    <?= $receipt_id . ", ";
     while ($row = mysqli_fetch_array($res_shops_query)) {
-        echo $row['shp_ttl'] . " ";
+        echo $row['shp_ttl'] . ", ";
         echo $row['date'];
     }
-    ?>
-</h2>
+    ?></h1>
+
+
 <form action="edit_form.php" method="post">
     <p><b>Введите данные</b></p>
     <table>
@@ -74,10 +74,6 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die();
             <td><input type="text" id="price_of_one" name="price_of_one"></td>
         </tr>
         <tr>
-            <td><label for="total_price">Цена за все количество</label></td>
-            <td><input type="text" id="total_price" name="total_price"></td>
-        </tr>
-        <tr>
             <td><label for="comment">Комментарий</label></td>
             <td><input type="text" id="comment" name="comment"></td>
         </tr>
@@ -101,66 +97,89 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die();
             <td>&nbsp;</td>
         </tr>
     </table>
+</form>
+<?php
 
-    <?php
-    if (!empty($_POST)) {
-        $receipt_id = $_POST['receipt_id'];
-        $category = $_POST['category'];
-        $product = $_POST['product'];
-        $count = $_POST['count'];
-        $price_of_one = $_POST['price_of_one'];
-        $total_price = $_POST['total_price'];
-        $grade = $_POST['grade'];
-        $comment = $_POST['comment'];
-        $screenshot = $_POST['screenshot'];
 
-        $query_save = "INSERT INTO products 
+if (!empty($_POST)) {
+    $receipt_id = $_POST['receipt_id'];
+    $category = $_POST['category'];
+    $product = $_POST['product'];
+    $count = $_POST['count'];
+    $price_of_one = $_POST['price_of_one'];
+    $total_price = $_POST['price_of_one'] * $_POST['count'];
+    $grade = $_POST['grade'];
+    $comment = $_POST['comment'];
+    $screenshot = $_POST['screenshot'];
+
+    $query_save = "INSERT INTO products 
     (receipt_id, category_id, title, count, price_of_one, total_price, grade, comment, screenshot)
     VALUE ('$receipt_id', '$category', '$product','$count', '$price_of_one', '$total_price', '$grade', '$comment', '$screenshot')";
-        $result_save = mysqli_query($openBD, $query_save) or die(mysqli_error($openBD));
-        header("Location: edit_form.php?receipt_id=$receipt_id"); //отобрази эти страницу еще раз методом гет
-        exit;
+    $result_save = mysqli_query($openBD, $query_save) or die(mysqli_error($openBD));
+    header("Location: edit_form.php?receipt_id=$receipt_id"); //отобрази эти страницу еще раз методом гет
+    exit;
+}
+$query_sum_price = "SELECT SUM('total_price') FROM products 
+                        INNER JOIN receipts ON (products.receipt_id = receipts.id) 
+                        WHERE receipts.id=" . (int)$_GET['receipt_id'];
+$res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die();
+
+?>
+
+<table class="center" border="1">
+    <tr>
+        <th>ИТОГО</th>
+    </tr>
+
+    <?php
+    $total = 0;
+    while ($row = mysqli_fetch_assoc($res_query_sum_price)) {
+
+        echo "<tr>";
+        echo "<td>", $total += $row['total_price'], "</td>";
+        echo "</tr>";
     }
-
-
     ?>
 
-    <table class="center" border="1">
-        <tr>
-            <th>id чека</th>
-            <th>Категория</th>
-            <th>Продукт</th>
-            <th>Магазин</th>
-            <th>Цена за штуку</th>
-            <th>Общая цена</th>
-            <th>Количесво</th>
-            <th>Оценка</th>
-            <th>Комментарий</th>
-            <th>Дата</th>
-        </tr>
+</table>
 
-        <?php
-        while ($row = mysqli_fetch_array($result_query_show)) {
-            echo "<tr>";
-            echo "<td>", $row['receipt_id'], "</td>";
-            echo "<td>", $row['categ_ttl'], "</td>";
-            echo "<td>", $row['prod_ttl'], "</td>";
-            echo "<td>", $row['shp_ttl'], "</td>";
-            echo "<td>", $row['price_of_one'], "</td>";
-            echo "<td>", $row['total_price'], "</td>";
-            echo "<td>", $row['count'], "</td>";
-            echo "<td>", $row['grade'], "</td>";
-            echo "<td>", $row['comment'], "</td>";
-            echo "<td>", $row['date'], "</td>";
-            echo "</tr>";
-        }
-        ?>
+<table class="center" border="1">
+    <tr>
+        <th>Категория</th>
+        <th>Продукт</th>
+        <th>Цена за штуку</th>
+        <th>Общая цена</th>
+        <th>Количесво</th>
+        <th>Оценка</th>
+        <th>Комментарий</th>
+    </tr>
 
-    </table>
-    <a href="index.php">На главную</a><br>
-    <a href="table_receipts.php">Назад ко всем чекам</a><br>
-    <a href="receipt.php">Создать новый чек</a><br>
-    <a href="shop.php">Создать новый магазин</a><br>
-    <a href="category.php">Создать новый категорию</a>
+    <?php
+    while ($row = mysqli_fetch_array($result_query_show)) {
+        echo "<tr>";
+        echo "<td>", $row['categ_ttl'], "</td>";
+        echo "<td>", $row['prod_ttl'], "</td>";
+        echo "<td>", $row['price_of_one'], "</td>";
+        echo "<td>", $row['total_price'], "</td>";
+        echo "<td>", $row['count'], "</td>";
+        echo "<td>", $row['grade'], "</td>";
+        echo "<td>", $row['comment'], "</td>";
+        echo "<td>";
+        echo "<form method='post' action='delete_product.php'>";
+        echo "<input type='hidden' value='" . $row['prd_id'] . "' name='id_delete_prod'>";
+        echo "<input type='hidden' value='" . $row['receipt_id'] . "' name='del_receipt_id'>";
+        echo "<input type='submit' value='Удалить' name='submit'/>";
+        echo "</form>";
+        echo "</td>";
+        echo "</tr>";
+    }
+    ?>
+
+</table>
+<a href="index.php">На главную</a><br>
+<a href="table_receipts.php">Назад ко всем чекам</a><br>
+<a href="receipt.php">Создать новый чек</a><br>
+<a href="shop.php">Создать новый магазин</a><br>
+<a href="category.php">Создать новый категорию</a>
 </body>
 </html>

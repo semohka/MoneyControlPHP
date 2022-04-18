@@ -34,6 +34,14 @@ $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
         echo "<td>", $row['title'], "</td>";
         echo "<td>", $row['date'], "</td>";
         echo "<td><a href='edit_form.php?receipt_id=" . $row['id'] . "'>Редактировать</a></td>";
+
+        echo "<td>";
+        echo "<form method='post' action='delete_receipt.php'>";
+        echo "<input type='hidden' value='" . $row['id'] . "' name='id_delete'>";
+        echo "<input type='submit' value='Удалить' name='submit'/>";
+        echo "</form>";
+        echo "</td>";
+
         echo "</tr>";
     }
     ?>
