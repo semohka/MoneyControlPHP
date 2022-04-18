@@ -3,7 +3,7 @@ $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
 
 $category_query = 'SELECT * FROM product_categories';
-$res_category_query = mysqli_query($openBD, $category_query) or die();
+$res_category_query = mysqli_query($openBD, $category_query) or die(mysqli_error($openBD));
 
 $query_show = "SELECT products.id as prd_id, product_categories.title as categ_ttl, products.title as prod_ttl, 
        price_of_one, total_price, grade, count, comment, receipt_id, 
@@ -11,7 +11,7 @@ $query_show = "SELECT products.id as prd_id, product_categories.title as categ_t
     INNER JOIN receipts ON (products.receipt_id = receipts.id) 
     INNER JOIN shops ON (receipts.shop_id = shops.id)
     INNER JOIN product_categories ON (products.category_id = product_categories.id) WHERE receipt_id=" . (int)$_GET['receipt_id'];
-$result_query_show = mysqli_query($openBD, $query_show) or die();
+$result_query_show = mysqli_query($openBD, $query_show) or die(mysqli_error($openBD));
 
 $receipt_id = null;
 if (!empty($_GET['receipt_id'])) {
@@ -21,7 +21,7 @@ if (!empty($_GET['receipt_id'])) {
 $shops_query = "SELECT shops.title as shp_ttl,  date FROM shops 
     INNER JOIN receipts ON (shops.id = receipts.shop_id) 
     WHERE receipts.id=" . (int)$_GET['receipt_id'];
-$res_shops_query = mysqli_query($openBD, $shops_query) or die();
+$res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($openBD));
 
 
 ?>
@@ -119,10 +119,10 @@ if (!empty($_POST)) {
     header("Location: edit_form.php?receipt_id=$receipt_id"); //отобрази эти страницу еще раз методом гет
     exit;
 }
-$query_sum_price = "SELECT SUM('total_price') FROM products 
+$query_sum_price = "SELECT SUM(total_price) as ttl_prc FROM products 
                         INNER JOIN receipts ON (products.receipt_id = receipts.id) 
                         WHERE receipts.id=" . (int)$_GET['receipt_id'];
-$res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die();
+$res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die(mysqli_error($openBD));
 
 ?>
 
@@ -132,11 +132,9 @@ $res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die();
     </tr>
 
     <?php
-    $total = 0;
     while ($row = mysqli_fetch_assoc($res_query_sum_price)) {
-
         echo "<tr>";
-        echo "<td>", $total += $row['total_price'], "</td>";
+        echo "<td>", $row['ttl_prc'], "</td>";
         echo "</tr>";
     }
     ?>
