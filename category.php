@@ -5,33 +5,44 @@ include 'nav_menu.php';
 <head>
     <style>
         body {
-            background-color: gainsboro;
-            margin-left: 10%;
-            /*margin-top: 10%;*/
-            font-family: sans-serif;
+            font-family: Verdana, Geneva, Arial, sans-serif;
+            font-size: small;
+            text-align: center;
+        }
+
+        h1 {
+            color: #cc6600;
+            border-bottom: thin dotted #888888;
+            font-family: "Emblema One", sans-serif;
+            font-size: 220%;
+        }
+
+        .form-center {
+            display: flex;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-<h1>ТАБЛИЦА КАТЕГОРИЙ</h1>
-<form action="category.php" method="post">
-    <p><b>Введите данные</b></p>
-    <table>
-        <tr>
-            <td><label for="category">Категория</label></td>
-            <td><input type="text" id="category" name="category"></td>
-        </tr>
+<h1>Таблица категорий</h1>
+<div class="form-center">
+    <form action="category.php" method="post">
+        <table>
+            <tr>
+                <td><label for="category">Категория</label></td>
+                <td><input type="text" id="category" name="category" placeholder="Введите данные"></td>
+            </tr>
 
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Сохранить" name="submit"/></td>
-        </tr>
-    </table>
-</form>
-<a href="index.php">Вернуться обратно</a>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Сохранить" name="submit"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
 
 <?php
 if (!empty($_POST['category'])) {

@@ -1,5 +1,6 @@
 <?php
 include 'nav_menu.php';
+
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
 $shops_query = 'SELECT * FROM shops';
@@ -9,22 +10,33 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die();
 <head>
     <style>
         body {
-            background-color: gainsboro;
-            margin-left: 10%;
-            /*margin-top: 10%;*/
-            font-family: sans-serif;
+            font-family: Verdana, Geneva, Arial, sans-serif;
+            font-size: small;
+            text-align: center;
+        }
+
+        h1 {
+            color: #cc6600;
+            border-bottom: thin dotted #888888;
+            font-family: "Emblema One", sans-serif;
+            font-size: 220%;
+        }
+
+        .form-center {
+            display: flex;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-<h1>СОЗДАТЬ НОВЫЙ ЧЕК</h1>
-<form action="receipt.php" method="post">
-    <p><b>Введите данные</b></p>
-    <table>
-        <tr>
-            <td><label for="shop">Магазин</label></td>
-            <td><select name="shop" id="shop">
-                <?php while ($row = mysqli_fetch_array($res_shops_query)) {
+<h1>Создать новый чек</h1>
+<div class="form-center">
+    <form action="receipt.php" method="post">
+        <table>
+            <tr>
+                <td><label for="shop">Магазин</label></td>
+                <td><select name="shop" id="shop">
+                    <?php while ($row = mysqli_fetch_array($res_shops_query)) {
                     echo "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";
                 }
                 ?></td>
@@ -33,17 +45,16 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die();
             <td><label for="date">Дата</label></td>
             <td><input type="datetime-local" id="date" name="date"></td>
         </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Сохранить" name="submit"/></td>
-        </tr>
-    </table>
-</form>
-<a href="index.php">Вернуться обратно</a>
-<a href="table_receipts.php">Просмотр чеков</a>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Сохранить" name="submit"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
 <?php
 if (!empty($_POST['shop']) &&
     !empty($_POST['date'])) {

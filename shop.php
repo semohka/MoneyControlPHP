@@ -9,7 +9,6 @@ include 'nav_menu.php';
             font-size: small;
             text-align: center;
         }
-
         h1 {
             color: #cc6600;
             border-bottom: thin dotted #888888;
@@ -24,7 +23,7 @@ include 'nav_menu.php';
     </style>
 </head>
 <body>
-<h1>ТАБЛИЦА МАГАЗИНОВ</h1>
+<h1>Таблица магазинов</h1>
 <div class="form-center">
     <form action="shop.php" method="post">
         <table>
@@ -43,8 +42,6 @@ include 'nav_menu.php';
         </table>
     </form>
 </div>
-<a href="index.php">Вернуться обратно</a>
-
 <?php
 if (!empty($_POST['shop'])) {
     $shopName = $_POST['shop'];

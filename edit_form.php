@@ -1,5 +1,6 @@
 <?php
 include 'nav_menu.php';
+
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
 
@@ -30,14 +31,32 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
 <head>
     <style>
         body {
-            background-color: gainsboro;
-            margin-left: 10%;
-            font-family: sans-serif;
+            font-family: Verdana, Geneva, Arial, sans-serif;
+            font-size: small;
+            text-align: center;
+        }
+
+        h1 {
+            color: #cc6600;
+            border-bottom: thin dotted #888888;
+            font-family: "Emblema One", sans-serif;
+            font-size: 220%;
+        }
+
+        .form-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
-<h1>ДОБАВЛЕНИЕ ПРОДУКТА В ЧЕК №
+<h1>Добавление продукта в чек №
     <?= $receipt_id . ", ";
     while ($row = mysqli_fetch_array($res_shops_query)) {
         echo $row['shp_ttl'] . ", ";
@@ -45,13 +64,12 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
     }
     ?></h1>
 
-
-<form action="edit_form.php" method="post">
-    <p><b>Введите данные</b></p>
-    <table>
-        <tr>
-            <td>
-                <input type="hidden" name="receipt_id" value="<?= $receipt_id ?>"/>
+<div class="form-center">
+    <form action="edit_form.php" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input type="hidden" name="receipt_id" value="<?= $receipt_id ?>"/>
             </td>
         </tr>
         <tr>
@@ -62,31 +80,31 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
                 }
                 ?></td>
         </tr>
-        <tr>
-            <td><label for="product">Товар</label></td>
-            <td><input type="text" id="product" name="product"></td>
-        </tr>
-        <tr>
-            <td><label for="count">Количество</label></td>
-            <td><input type="text" id="count" name="count"></td>
-        </tr>
-        <tr>
-            <td><label for="price_of_one">Цена за штуку</label></td>
-            <td><input type="text" id="price_of_one" name="price_of_one"></td>
-        </tr>
-        <tr>
-            <td><label for="comment">Комментарий</label></td>
-            <td><input type="text" id="comment" name="comment"></td>
-        </tr>
-        <tr>
-            <td><label for="grade">Оценка</label></td>
-            <td><label for="grade">Отлично</label>
-                <input type="radio" id="grade-good" name="grade" value="good"><br>
-                <label for="grade">Нормально</label>
-                <input type="radio" id="grade-normal" name="grade" value="normal"><br>
-                <label for="grade">Плохо</label>
-                <input type="radio" id="grade-bad" name="grade" value="bad"></td>
-        </tr>
+            <tr>
+                <td><label for="product">Товар</label></td>
+                <td><input type="text" id="product" name="product" placeholder="Введите название"></td>
+            </tr>
+            <tr>
+                <td><label for="count">Количество</label></td>
+                <td><input type="text" id="count" name="count" placeholder="Введите число"></td>
+            </tr>
+            <tr>
+                <td><label for="price_of_one">Цена за штуку</label></td>
+                <td><input type="text" id="price_of_one" name="price_of_one" placeholder="Введите число"></td>
+            </tr>
+            <tr>
+                <td><label for="comment">Комментарий</label></td>
+                <td><input type="text" id="comment" name="comment" placeholder="Коммент"></td>
+            </tr>
+            <tr>
+                <td><label for="grade">Оценка</label></td>
+                <td><label for="grade">Отлично</label>
+                    <input type="radio" id="grade-good" name="grade" value="good"><br>
+                    <label for="grade">Нормально</label>
+                    <input type="radio" id="grade-normal" name="grade" value="normal"><br>
+                    <label for="grade">Плохо</label>
+                    <input type="radio" id="grade-bad" name="grade" value="bad"></td>
+            </tr>
         <tr>
             <td><label for="screenshot">Фото</label></td>
             <td><input type="file" id="screenshot" name="screenshot"></td>
@@ -94,14 +112,15 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
         <tr>
             <td>&nbsp;</td>
         </tr>
-        <tr>
-            <td><input type="submit" value="Сохранить" name="submit"/></td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
-</form>
+            <tr>
+                <td><input type="submit" value="Сохранить" name="submit"/></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </form>
+</div>
 <?php
 
 
@@ -130,7 +149,7 @@ $res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die(mysqli_err
 
 ?>
 
-<table class="center" border="1">
+<table class="center">
     <tr>
         <th>ИТОГО</th>
     </tr>
@@ -178,10 +197,5 @@ $res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die(mysqli_err
     ?>
 
 </table>
-<a href="index.php">На главную</a><br>
-<a href="table_receipts.php">Назад ко всем чекам</a><br>
-<a href="receipt.php">Создать новый чек</a><br>
-<a href="shop.php">Создать новый магазин</a><br>
-<a href="category.php">Создать новый категорию</a>
 </body>
 </html>
