@@ -1,4 +1,5 @@
 <?php
+include 'nav_menu.php';
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
 
@@ -79,8 +80,11 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
         </tr>
         <tr>
             <td><label for="grade">Оценка</label></td>
-            <td><input type="radio" id="grade-good" name="grade" value="good">
-                <input type="radio" id="grade-normal" name="grade" value="normal">
+            <td><label for="grade">Отлично</label>
+                <input type="radio" id="grade-good" name="grade" value="good"><br>
+                <label for="grade">Нормально</label>
+                <input type="radio" id="grade-normal" name="grade" value="normal"><br>
+                <label for="grade">Плохо</label>
                 <input type="radio" id="grade-bad" name="grade" value="bad"></td>
         </tr>
         <tr>
@@ -134,7 +138,7 @@ $res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die(mysqli_err
     <?php
     while ($row = mysqli_fetch_assoc($res_query_sum_price)) {
         echo "<tr>";
-        echo "<td>", $row['ttl_prc'], "</td>";
+        echo "<td>", $row['ttl_prc'], " ₽</td>";
         echo "</tr>";
     }
     ?>
@@ -145,8 +149,8 @@ $res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die(mysqli_err
     <tr>
         <th>Категория</th>
         <th>Продукт</th>
-        <th>Цена за штуку</th>
-        <th>Общая цена</th>
+        <th>Цена за штуку, ₽</th>
+        <th>Общая цена, ₽</th>
         <th>Количесво</th>
         <th>Оценка</th>
         <th>Комментарий</th>

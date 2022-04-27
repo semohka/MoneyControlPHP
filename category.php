@@ -1,3 +1,6 @@
+<?php
+include 'nav_menu.php';
+?>
 <html>
 <head>
     <style>
