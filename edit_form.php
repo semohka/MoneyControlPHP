@@ -54,6 +54,11 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
             margin-top: 50px;
         }
     </style>
+
+    <script src="jquery-3.6.0.min.js"></script>
+    <script>
+        
+    </script>
 </head>
 <body>
 <h1>Добавление продукта в чек №
