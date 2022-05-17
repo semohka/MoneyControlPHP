@@ -4,7 +4,6 @@ include 'nav_menu.php';
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Control</title>
     <style>
         body {
             font-family: Verdana, Geneva, Arial, sans-serif;

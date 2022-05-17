@@ -18,6 +18,7 @@
             text-decoration: none;
             font-size: 17px;
         }
+
         .nav_menu a:hover {
             background-color: #cc6600;
             color: white;
@@ -27,6 +28,7 @@
 <body>
 
 <div class="nav_menu">
+    <a href="index.php">Статистика</a>
     <a href="shop.php">Новый магазин</a>
     <a href="category.php">Новая категория</a>
     <a href="receipt.php">Новый чек</a>

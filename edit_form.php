@@ -53,11 +53,33 @@ $res_shops_query = mysqli_query($openBD, $shops_query) or die(mysqli_error($open
             margin-right: auto;
             margin-top: 50px;
         }
+
+        #clickMe {
+            /*background: #D8B36E;*/
+            /*padding: 20px;*/
+            /*text-align: center;*/
+            /*width: 205px;*/
+            display: block;
+            /*border: 2px solid #000;*/
+        }
+
+        #picframe {
+            /*background: #D8B36E;*/
+            /*padding: 20px;*/
+            /*width: 205px;*/
+            display: none;
+            /*border: 2px solid #000;*/
+        }
     </style>
 
     <script src="jquery-3.6.0.min.js"></script>
     <script>
-        
+        $(document).ready(function () {
+            $("#clickMe").click(function () {
+                $("img").fadeIn(1000);
+                $("#picframe").slideToggle("slow");
+            });
+        });
     </script>
 </head>
 <body>
@@ -202,5 +224,9 @@ $res_query_sum_price = mysqli_query($openBD, $query_sum_price) or die(mysqli_err
     ?>
 
 </table>
+<div id="clickMe">Показать фото чека</div>
+<div id="picframe">
+    <img src="images/srisovki.jpg">
+</div>
 </body>
 </html>
