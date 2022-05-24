@@ -49,16 +49,54 @@ include 'nav_menu.php';
 <?php
 $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
 or die('ERROR CONNECTION TO DB');
-$query = "SELECT"
+$queryAllDate = "SELECT SUM(total_price) as aldt FROM products
+JOIN receipts ON products.receipt_id = receipts.id
+WHERE date between '2021-01-01' and CURDATE()";
+
+$queryMonth = "SELECT SUM(total_price) as alldt FROM products
+JOIN receipts ON products.receipt_id = receipts.id
+WHERE date between '2021-01-01' and CURDATE()";
+
+$resultAllDate = mysqli_query($openBD, $queryAllDate) or die("ERROR QUERY");
+$resultMonth = mysqli_query($openBD, $queryMonth) or die("ERROR QUERY");
+
+
 ?>
 
 <table class="center">
     <tr>
-        <th>№</th>
         <th>За неделю</th>
         <th>За месяц</th>
         <th>За год</th>
     </tr>
 
+    <?php
+    echo "<tr>";
+
+    while ($row = mysqli_fetch_array($resultMonth)) {
+        echo "<td>" . $row['alldt'] . "</td>";
+    }
+
+
+    while ($row = mysqli_fetch_array($resultAllDate)) {
+        echo "<td>" . $row['aldt'] . "</td>";
+    }
+
+
+    echo "</tr>";
+    ?>
+
+    <!--    --><?php
+    //    while ($row = mysqli_fetch_array($resultMonth)) {
+    //        echo "<tr>";
+    //        echo "<td>", $row['alldt'], "</td>";
+    //        echo "</tr>";
+    //    }
+    //    while ($row = mysqli_fetch_array($resultAllDate)) {
+    //        echo "<tr>";
+    //        echo "<td>", $row['aldt'], "</td>";
+    //        echo "</tr>";
+    //    }
+    //    ?>
 </body>
 </html>
