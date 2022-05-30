@@ -1,3 +1,20 @@
+<?php
+include 'connectBD.php';
+
+$orderBy = 'id';
+if (!empty($_GET['sort'])) {
+    $orderBy = $_GET['sort'];
+}
+
+$direction = 'DESC';
+if (isset($_GET['direction'])) {
+    $direction = $_GET['direction'];
+}
+//$queryy = "select * FROM products INNER JOIN receipts ON (products.receipt_id = receipts.id) JOIN shops ON (receipts.shop_id = shops.id)";
+$queryy = "select * FROM products";
+/** @var mysqli $openBD */
+$result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
+?>
 <html>
 <head>
     <meta charset="utf-8">
@@ -18,23 +35,7 @@
 </head>
 <body>
 <h1>ТАБЛИЦА ЧЕКОВ</h1>
-<?php
-$openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-or die('ERROR CONNECTION TO DB');
 
-$orderBy = 'id';
-if (!empty($_GET['sort'])) {
-    $orderBy = $_GET['sort'];
-}
-
-$direction = 'DESC';
-if (isset($_GET['direction'])) {
-    $direction = $_GET['direction'];
-}
-//$queryy = "select * FROM products INNER JOIN receipts ON (products.receipt_id = receipts.id) JOIN shops ON (receipts.shop_id = shops.id)";
-$queryy = "select * FROM products";
-$result = mysqli_query($openBD, $queryy) or die("ERROR QUERY");
-?>
 <form name="search" action="table.php" method="post">
     <input type="search" name="search" placeholder="Поиск">
     <button type="submit">Найти</button>

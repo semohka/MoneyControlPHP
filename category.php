@@ -1,5 +1,19 @@
 <?php
 include 'nav_menu.php';
+include 'connectBD.php';
+if (!empty($_POST['category'])) {
+    $categoryName = $_POST['category'];
+    $query = "INSERT INTO product_categories(title)" .
+        "VALUES ('$categoryName')";
+
+    /** @var mysqli $openBD */
+    $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
+
+    header("Location: " . $_SERVER['PHP_SELF']); //отобрази эту же страницу еще раз только методом гет
+    exit;
+} elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
+    echo "Error";
+}
 ?>
 <html>
 <head>
@@ -30,7 +44,8 @@ include 'nav_menu.php';
         <table>
             <tr>
                 <td><label for="category">Категория</label></td>
-                <td><input type="text" id="category" name="category" placeholder="Введите данные"></td>
+                <td><input type="text" id="category" name="category" placeholder="Введите данные" autocomplete="off">
+                </td>
             </tr>
 
             <tr>
@@ -43,22 +58,5 @@ include 'nav_menu.php';
         </table>
     </form>
 </div>
-
-<?php
-if (!empty($_POST['category'])) {
-    $categoryName = $_POST['category'];
-    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-    or die('ERROR CONNECTION TO DB');
-    $query = "INSERT INTO product_categories(title)" .
-        "VALUES ('$categoryName')";
-
-    $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
-
-    header("Location: " . $_SERVER['PHP_SELF']); //отобрази эту же страницу еще раз только методом гет
-    exit;
-} elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
-    echo "Error";
-}
-?>
 </body>
 </html>

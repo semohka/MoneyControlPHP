@@ -1,9 +1,8 @@
 <?php
 include 'nav_menu.php';
-
-$openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-or die('ERROR CONNECTION TO DB');
+include 'connectBD.php';
 $shops_query = 'SELECT * FROM shops';
+/** @var mysqli $openBD */
 $res_shops_query = mysqli_query($openBD, $shops_query) or die();
 ?>
 <html>

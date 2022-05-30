@@ -1,5 +1,9 @@
 <?php
 include 'nav_menu.php';
+include 'connectBD.php';
+$query = "SELECT receipts.id, shops.title, date FROM receipts INNER JOIN shops ON (receipts.shop_id = shops.id)";
+/** @var mysqli $openBD */
+$result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 ?>
 <html>
 <head>
@@ -37,13 +41,7 @@ include 'nav_menu.php';
 </head>
 <body>
 <h1>Просмотр и редактирование чеков</h1>
-<?php
-$openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-or die('ERROR CONNECTION TO DB');
-$query = "SELECT receipts.id, shops.title, date FROM receipts INNER JOIN shops ON (receipts.shop_id = shops.id)";
-$result = mysqli_query($openBD, $query) or die("ERROR QUERY");
 
-?>
 <table class="center">
     <tr>
         <th>№</th>

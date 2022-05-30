@@ -1,5 +1,19 @@
 <?php
 include 'nav_menu.php';
+include 'connectBD.php';
+if (!empty($_POST['shop'])) {
+    $shopName = $_POST['shop'];
+    $query = "INSERT INTO shops(title)" .
+        "VALUES ('$shopName')";
+
+    /** @var mysqli $openBD */
+    $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
+
+    header("Location: " . $_SERVER['PHP_SELF']); //отобрази эту же страницу еще раз только методом гет
+    exit;
+} elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
+    echo "Error";
+}
 ?>
 <html>
 <head>
@@ -9,6 +23,7 @@ include 'nav_menu.php';
             font-size: small;
             text-align: center;
         }
+
         h1 {
             color: #cc6600;
             border-bottom: thin dotted #888888;
@@ -29,7 +44,7 @@ include 'nav_menu.php';
         <table>
             <tr>
                 <td><label for="shop">Магазин</label></td>
-                <td><input type="text" id="shop" name="shop" placeholder="Введите данные"></td>
+                <td><input type="text" id="shop" name="shop" placeholder="Введите данные" autocomplete="off"></td>
             </tr>
 
             <tr>
@@ -42,23 +57,5 @@ include 'nav_menu.php';
         </table>
     </form>
 </div>
-<?php
-if (!empty($_POST['shop'])) {
-    $shopName = $_POST['shop'];
-    $openBD = mysqli_connect('localhost', 'root', '', 'money_control_php')
-    or die('ERROR CONNECTION TO DB');
-    $query = "INSERT INTO shops(title)" .
-        "VALUES ('$shopName')";
-
-    $result = mysqli_query($openBD, $query) or die("ERROR QUERY");
-
-    header("Location: " . $_SERVER['PHP_SELF']); //отобрази эту же страницу еще раз только методом гет
-    exit;
-} elseif ($_SERVER['REQUEST_METHOD'] == "POST") {//если форма ушла пустая методом пост
-    echo "Error";
-}
-
-
-?>
 </body>
 </html>
