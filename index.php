@@ -3,26 +3,30 @@ const MC_UPLOAD_PATH = 'images/';
 include 'nav_menu.php';
 include 'connectBD.php';
 
+$nowDate = date('Y-m-d H:i:s');
+$lastDate = date('Y-m-d', strtotime('-7 day'));
+echo $nowDate . "<br>";
+echo $lastDate;
+
 //$queryAllDate = "SELECT SUM(total_price) as aldt FROM products
 //JOIN receipts ON products.receipt_id = receipts.id
 //WHERE date between '2021-01-01' and CURDATE()";
 
-$queryMonth = "SELECT SUM(total_price) as alldt, r.date, DATE_FORMAT(r.date, '%d-%m-%y')
+$queryMonth = "SELECT SUM(total_price) as alldt, r.date, DATE_FORMAT(r.date, '%d %M %Y') as dtMonth
 FROM products
 JOIN receipts r ON products.receipt_id = r.id
-WHERE r.date between date_sub(now(),INTERVAL 1 MONTH) and now()
+WHERE r.date between date_sub(now(),INTERVAL 4 MONTH) and now()
 GROUP BY DATE_FORMAT(r.date, '%m%y')
 ORDER BY r.date";
 
-$queryWeek = "SELECT SUM(total_price) as wkdt, r.date, DATE_FORMAT(r.date, '%d-%m-%y')
+$queryWeek = "SELECT SUM(total_price) as wkdt, DATE_FORMAT(r.date, '%d %M %Y') as dtWeek
 FROM products
 JOIN receipts r ON products.receipt_id = r.id
-WHERE r.date between date_sub(now(),INTERVAL 1 WEEK) and now()
-GROUP BY DATE_FORMAT(r.date, '%m%y')
+WHERE r.date between '$lastDate' and '$nowDate'
+GROUP BY DATE_FORMAT(r.date, '%d%m%y')
 ORDER BY r.date";
 
-$queryLastYear = "SELECT SUM(total_price) as lysum, r.date, title, 
-       DATE_FORMAT(r.date, '%d-%m-%y')
+$queryLastYear = "SELECT SUM(total_price) as lysum, DATE_FORMAT(r.date, '%M %Y') as dtYear
 FROM products
 JOIN receipts r ON products.receipt_id = r.id
 WHERE r.date between '2021-01-01' and NOW()
@@ -30,7 +34,6 @@ GROUP BY DATE_FORMAT(r.date, '%m%y')
 ORDER BY r.date";
 
 /** @var mysqli $openBD */
-//$resultAllDate = mysqli_query($openBD, $queryAllDate) or die("ERROR QUERY");
 $resultMonth = mysqli_query($openBD, $queryMonth) or die("ERROR QUERY");
 $resultWeek = mysqli_query($openBD, $queryWeek) or die("ERROR QUERY");
 $resultLastYear = mysqli_query($openBD, $queryLastYear) or die("ERROR QUERY");
@@ -42,7 +45,7 @@ $resultLastYear = mysqli_query($openBD, $queryLastYear) or die("ERROR QUERY");
 //]
 $resultsMonth = [];
 while ($row = mysqli_fetch_array($resultMonth)) {
-    $resultsMonth[$row['date']] = $row['alldt'];
+    $resultsMonth[$row['dtMonth']] = $row['alldt'];
 }
 $priceMonth = json_encode(array_values($resultsMonth));
 $dateMonth = json_encode(array_keys($resultsMonth));
@@ -50,7 +53,7 @@ $dateMonth = json_encode(array_keys($resultsMonth));
 
 $resultsWeek = [];
 while ($row = mysqli_fetch_array($resultWeek)) {
-    $resultsWeek[$row['date']] = $row['wkdt'];
+    $resultsWeek[$row['dtWeek']] = $row['wkdt'];
 }
 $priceWeek = json_encode(array_values($resultsWeek));
 $dateWeek = json_encode(array_keys($resultsWeek));
@@ -58,7 +61,7 @@ $dateWeek = json_encode(array_keys($resultsWeek));
 
 $resultsYear = [];
 while ($row = mysqli_fetch_array($resultLastYear)) {
-    $resultsYear[$row['date']] = $row['lysum'];
+    $resultsYear[$row['dtYear']] = $row['lysum'];
 }
 $priceYear = json_encode(array_values($resultsYear));
 $dateYear = json_encode(array_keys($resultsYear));
@@ -136,6 +139,8 @@ $dateYear = json_encode(array_keys($resultsYear));
 
 <div class="chart-container" style="position: relative; height:40vh; width:100vw">
     <canvas id="myChart" width="50" height="10"></canvas>
+    <canvas id="myChart2" width="50" height="10"></canvas>
+    <canvas id="myChart3" width="50" height="10"></canvas>
 </div>
 
 <script src=dist/chart.js></script>
@@ -149,64 +154,63 @@ $dateYear = json_encode(array_keys($resultsYear));
                 label: 'Все товары за весь год',
                 data: <?=$priceYear?>,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    const ctx2 = document.getElementById('myChart2');
+    const myChart2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: <?=$dateMonth?>,
+            datasets: [{
+                label: 'Все товары за месяц',
+                data: <?=$priceMonth?>,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    const ctx3 = document.getElementById('myChart3');
+    const myChart3 = new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: <?=$dateWeek?>,
+            datasets: [{
+                label: 'Все товары за неделю',
+                data: <?=$priceWeek?>,
+                backgroundColor: [
                     'rgba(255, 159, 64, 0.2)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
-            },
-                {
-                    label: 'Все товары за неделю',
-                    data: <?=$priceWeek?>,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }, {
-                    label: 'Все товары за месяц',
-                    data: <?=$priceMonth?>,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+            }]
         },
         options: {
             scales: {
@@ -219,3 +223,4 @@ $dateYear = json_encode(array_keys($resultsYear));
 </script>
 </body>
 </html>
+
