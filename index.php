@@ -3,8 +3,8 @@ const MC_UPLOAD_PATH = 'images/';
 include 'nav_menu.php';
 include 'connectBD.php';
 
-$nowDate = date('Y-m-d H:i:s');
-$lastDate = date('Y-m-d', strtotime('-7 day'));
+$nowDate = date('Y-m-d 23:59:59');
+$lastDate = date('Y-m-d 00:00:00', strtotime('-7 day'));
 
 $queryMonth = "SELECT SUM(total_price) as alldt, r.date, DATE_FORMAT(r.date, '%d %M %Y') as dtMonth
 FROM products
