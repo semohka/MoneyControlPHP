@@ -9,8 +9,6 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Receipt */
 /* @var $form yii\widgets\ActiveForm */
 $shops = Shop::find()->all();
-//echo '<pre>';
-//print_r(ArrayHelper::map($shops,'id','title'));
 ?>
 
 <div class="receipt-form">

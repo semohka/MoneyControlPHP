@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -10,6 +11,8 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $shop_id
  * @property string $date
+ *
+ * @property Shop $shop
  */
 class Receipt extends ActiveRecord
 {
@@ -34,6 +37,14 @@ class Receipt extends ActiveRecord
             'shop_id' => 'Магазин',
             'date' => 'Дата создания'
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getShop()
+    {
+        return $this->hasOne(Shop::className(), ['id' => 'shop_id']);
     }
 
 }
