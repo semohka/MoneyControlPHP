@@ -1,11 +1,17 @@
 <?php
 
+use app\models\Product;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Receipt */
+/* @var $searchModel app\models\ProductSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Чек из ' . $model->shop->title;
 $this->params['breadcrumbs'][] = ['label' => 'Чеки', 'url' => ['index']];
@@ -21,6 +27,7 @@ YiiAsset::register($this);
     </h1>
 
     <p>
+        <?= Html::a('Новый продукт', ['product/create', 'receipt_id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -39,5 +46,29 @@ YiiAsset::register($this);
             'date',
         ],
     ]) ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'title',
+            'price_of_one',
+            'total_price',
+            'count',
+            'grade',
+            'comment',
+            'screenshot',
+            'category_id',
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Product $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                }
+            ],
+        ],
+    ]); ?>
 
 </div>

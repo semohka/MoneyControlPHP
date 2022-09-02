@@ -7,7 +7,7 @@ use app\models\Receipt;
 use yii\helpers\Html;
 use yii\web\View;
 
-$this->title = 'Новый  чек';
+$this->title = 'Новый чек';
 $this->params['breadcrumbs'][] = ['label' => 'Чеки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
