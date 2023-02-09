@@ -40,10 +40,13 @@ class ReceiptController extends Controller
         ]);
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     public function actionView($id)
     {
         $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams, $id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -52,6 +55,9 @@ class ReceiptController extends Controller
         ]);
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     private function findModel($id)
     {
         if (($model = Receipt::findOne(['id' => $id])) !== null) {

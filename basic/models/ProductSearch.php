@@ -16,11 +16,11 @@ class ProductSearch extends Product
         ];
     }
 
-    public function search(array $params, $id)
+    public function search(array $params)
     {
         $query = Product::find();
         $dataProvider = new ActiveDataProvider([
-            'query' => $query->where(['receipt_id' => $id])
+            'query' => $query
         ]);
         $this->load($params);
         if (!$this->validate()) {

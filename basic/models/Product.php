@@ -17,6 +17,7 @@ use yii\db\ActiveRecord;
  * @property int $category_id
  * @property string $comment [varchar(40)]
  * @property string $screenshot [varchar(40)]
+ * @property ProductCategory $category
  */
 class Product extends ActiveRecord
 {
@@ -53,5 +54,10 @@ class Product extends ActiveRecord
             'receipt_id' => 'Номер чека',
             'category_id' => 'Категория',
         ];
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(ProductCategory::class, ['id' => 'category_id']);
     }
 }

@@ -1,18 +1,19 @@
 <?php
 
+
+/** @var $model app\models\Product */
+
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Shop */
-
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Магазины', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Продукты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
-<div class="shop-view">
+
+<div class="product-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

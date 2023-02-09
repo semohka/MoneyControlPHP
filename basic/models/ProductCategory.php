@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
  * This is the model class for table "shops".
  *
  * @property int $id
+ * @property-read Product[] $products
  * @property string $title
  */
 class ProductCategory extends ActiveRecord
@@ -31,5 +32,10 @@ class ProductCategory extends ActiveRecord
             'id' => 'ID',
             'title' => 'Название',
         ];
+    }
+
+    public function getProducts()
+    {
+        return $this->hasMany(Product::class, ['category_id' => 'id']);
     }
 }
