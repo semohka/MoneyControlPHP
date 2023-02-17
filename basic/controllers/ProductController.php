@@ -1,9 +1,11 @@
 <?php
 
 namespace app\controllers;
+/** @var integer $receipt_id */
 
 use app\models\Product;
 use app\models\ProductSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -53,4 +55,29 @@ class ProductController extends Controller
         throw new NotFoundHttpException('Указанный чек не найден.');
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @throws StaleObjectException
+     * @throws NotFoundHttpException
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+        return $this->redirect(['index']);
+    }
 }

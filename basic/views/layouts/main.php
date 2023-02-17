@@ -28,8 +28,6 @@ AppAsset::register($this);
 <header>
     <?php
     NavBar::begin([
-//        'brandLabel' => Yii::$app->name,
-//        'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
         ],
@@ -37,21 +35,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Продукты', 'url' => ['/product/index']],
             ['label' => 'Чеки', 'url' => ['/receipt/index']],
             ['label' => 'Магазины', 'url' => ['/shop/index']],
-            Yii::$app->user->isGuest ? (
-            ['label' => 'Категории', 'url' => ['/category/index']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            ['label' => 'Категории', 'url' => ['/product-category/index']],
+            ['label' => 'Статистика', 'url' => ['/statistic/index']]
         ],
     ]);
     NavBar::end();

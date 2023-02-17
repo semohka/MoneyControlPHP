@@ -43,7 +43,7 @@ YiiAsset::register($this);
         'attributes' => [
             'id',
             'shop.title',
-            'date',
+            'date:dateTime',
         ],
     ]) ?>
 
@@ -63,9 +63,9 @@ YiiAsset::register($this);
             'screenshot',
             'category_id',
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Product $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
+                    return Url::toRoute(['product/' . $action, 'id' => $model->id]);
                 }
             ],
         ],

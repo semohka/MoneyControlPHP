@@ -16,14 +16,38 @@ $product_categories = ProductCategory::find()->all();
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'price_of_one')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'total_price')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'count')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'comment')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'screenshot')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map($product_categories, 'id', 'title')) ?>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col">
+                <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map($product_categories, 'id', 'title')) ?>
+            </div>
+            <div class="col">
+                <?= $form->field($model, 'count')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <?= $form->field($model, 'price_of_one')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col">
+                <?= $form->field($model, 'total_price')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col">
+                <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <?= $form->field($model, 'comment')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col">
+                <?= $form->field($model, 'screenshot')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+    </div>
     <?= $form->field($model, 'receipt_id')->textInput()->hiddenInput(['value' => $receipt_id])->label('') ?>
 
 

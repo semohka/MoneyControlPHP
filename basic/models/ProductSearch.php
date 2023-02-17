@@ -16,9 +16,9 @@ class ProductSearch extends Product
         ];
     }
 
-    public function search(array $params)
+    public function search(array $params, $receipt_id)
     {
-        $query = Product::find();
+        $query = Product::find()->where(['receipt_id' => $receipt_id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
